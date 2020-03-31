@@ -364,7 +364,33 @@ public class Dashboard extends javax.swing.JFrame {
                            break;
                     }
                     
-                    date.setText(sdf.format(d)+", "+tanggal+" "+bulan_indo+" "+tahun);
+                    String hari_indo = "";
+                    
+                    switch(sdf.format(d)){
+                        case "Monday" :
+                           hari_indo = "Senin";
+                           break;
+                        case "Tuesday" :
+                           hari_indo = "Selasa";
+                           break;
+                        case "Wednesday" :
+                           hari_indo = "Rabu";
+                           break;
+                        case "Thursday" :
+                           hari_indo = "Kamis";
+                           break;
+                        case "Friday" :
+                           hari_indo = "Jum'at";
+                           break;
+                        case "Saturday" :
+                           hari_indo = "Sabtu";
+                           break;
+                        case "Sunday" :
+                           hari_indo = "Minggu";
+                           break;
+                    }
+                    
+                    date.setText(hari_indo+", "+tanggal+" "+bulan_indo+" "+tahun);
                     time.setText(hr.format(d)+":"+(mnt.format(d))+":"+sd.format(d));
 //                    tgl_resep.setText(""+sdf.format(d)+", "+tanggal+" / "+(bulan1+1)+" / "+tahun);
 //                    tgl_rekam_medis.setText(tanggal+"-"+(bulan1+1)+"-"+tahun);

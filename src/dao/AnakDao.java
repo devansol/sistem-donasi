@@ -5,7 +5,12 @@
  */
 package dao;
 
+import constand.Query;
+import entity.AnakEntity;
+import java.util.HashMap;
+import java.util.Map;
 import koneksi.Conn;
+import static koneksi.KoneksiDb.getConnection;
 
 /**
  *
@@ -43,5 +48,31 @@ public class AnakDao {
             throw new Exception(e.getMessage());
         }
         return no_siswa;
+    }
+    
+    public Map<String,Object> saveAnak(AnakEntity entity, Conn connect) throws Exception{
+        Map<String,Object> map = new HashMap<>();
+        try{
+            connect.ps = connect.conn.prepareStatement(Query.saveAnak);
+            connect.ps.setString(1, entity.getKode_anak());
+            connect.ps.setString(2, entity.getNama_anak());
+            connect.ps.setString(3, entity.getJenis_kelamin());
+            connect.ps.setString(4, entity.getTempat_lahir());
+            connect.ps.setString(5, entity.getTanggal_lahir());
+            connect.ps.setString(6, entity.getTanggal_masuk_panti());
+            connect.ps.setString(7, entity.getPendidikan_terakhir());
+            connect.ps.setString(8, entity.getNama_orangtua_anak());
+            connect.ps.setString(9, entity.getKeterangan());
+            
+            connect.ps.executeUpdate();
+            
+            map.put("message", "Data berhasil di simpan");
+            map.put("status", true);
+        }catch(Exception e){
+            map.put("message", e.getMessage());
+            map.put("status", false);
+            throw new Exception(e.getMessage());
+        }
+        return map;
     }
 }

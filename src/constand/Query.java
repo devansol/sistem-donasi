@@ -21,4 +21,8 @@ public class Query {
     public static final String validasiAdmin = "select * from mst_login where username = ?";
     
     public static final String ubahPassword = "update mst_login set password = ? where username = ?";
+    
+    public static final String saveAnak = "insert into mst_anak (kode_anak, nama_anak, jenis_kelamin,"
+            + "tempat_lahir, tanggal_lahir, tanggal_masuk_panti,pendidikan_terakhir, nama_orangtua_anak,"
+            + "keterangan) values (?,?,?,?,?,?,?,?,?)";
 }

@@ -5,11 +5,14 @@
  */
 package main;
 
+import entity.AnakEntity;
 import entity.SessionEntity;
 import static java.lang.Thread.sleep;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -73,6 +76,8 @@ public class FormTambahAnak extends javax.swing.JFrame {
         reset = new javax.swing.JButton();
         tanggalLahir = new com.toedter.calendar.JDateChooser();
         tanggalMasukPanti = new com.toedter.calendar.JDateChooser();
+        jLabel10 = new javax.swing.JLabel();
+        orangTuaAnak = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         menuKeluar = new javax.swing.JMenuItem();
@@ -167,6 +172,15 @@ public class FormTambahAnak extends javax.swing.JFrame {
 
         tanggalMasukPanti.setDateFormatString("d-MMM-YYYY");
 
+        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel10.setText("Nama Orang Tua");
+
+        orangTuaAnak.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                orangTuaAnakActionPerformed(evt);
+            }
+        });
+
         jMenu1.setText("Aksi");
 
         menuKeluar.setText("Keluar");
@@ -229,26 +243,34 @@ public class FormTambahAnak extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel1))
-                                .addGap(22, 22, 22)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel4)
+                                            .addComponent(jLabel3)
+                                            .addComponent(jLabel1))
+                                        .addGap(25, 25, 25))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(jLabel10)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(kodeAnak, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(namaAnak, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jenisKelamin, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(tempatLahir, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(namaAnak, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(kodeAnak, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(orangTuaAnak, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addGap(24, 24, 24)
+                                .addComponent(tempatLahir, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(simpan)
                                 .addGap(18, 18, 18)
                                 .addComponent(reset)))
-                        .addGap(54, 54, 54)
+                        .addGap(69, 69, 69)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel9)
                                 .addGap(78, 78, 78)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel8)
@@ -256,7 +278,7 @@ public class FormTambahAnak extends javax.swing.JFrame {
                                     .addComponent(jLabel7))
                                 .addGap(26, 26, 26)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(tanggalMasukPanti, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(tanggalMasukPanti, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
                                     .addComponent(pendidikanTerakhir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(tanggalLahir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addGap(59, 59, 59))
@@ -290,7 +312,19 @@ public class FormTambahAnak extends javax.swing.JFrame {
                         .addComponent(jLabel6))
                     .addComponent(tanggalLahir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7)
+                            .addComponent(tanggalMasukPanti, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel8)
+                            .addComponent(pendidikanTerakhir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel9)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
@@ -301,25 +335,17 @@ public class FormTambahAnak extends javax.swing.JFrame {
                             .addComponent(jenisKelamin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
-                            .addComponent(tempatLahir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(29, 29, 29)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(simpan)
-                            .addComponent(reset)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7)
-                            .addComponent(tanggalMasukPanti, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(orangTuaAnak, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel10))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel8)
-                            .addComponent(pendidikanTerakhir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel9)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
-                .addContainerGap(101, Short.MAX_VALUE))
+                            .addComponent(tempatLahir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(reset)
+                            .addComponent(simpan))))
+                .addContainerGap(86, Short.MAX_VALUE))
         );
 
         pack();
@@ -371,9 +397,6 @@ public class FormTambahAnak extends javax.swing.JFrame {
     private void simpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simpanActionPerformed
         // TODO add your handling code here:
         try{
-       
-        
-        
             if(namaAnak.getText().equals("")){
                 namaAnak.requestFocus();
                 throw new Exception("Nama Anak tidak boleh kosong !");
@@ -391,12 +414,35 @@ public class FormTambahAnak extends javax.swing.JFrame {
                 throw new Exception("Tanggal Masuk Panti tidak boleh kosong !");
             }else if(pendidikanTerakhir.getSelectedIndex() == 0){
                 pendidikanTerakhir.requestFocus();
-                throw new Exception("Tanggal Lahir tidak boleh kosong !");
+                throw new Exception("Pendidikan terakhir belum di pilih !");
+            }else if(orangTuaAnak.getText().equals("")){
+                orangTuaAnak.requestFocus();
+                throw new Exception("Nama Orang Tua tidak boleh kosong !");
             }else{
-                 int flag = JOptionPane.showConfirmDialog(null, "Anda yakin ingin menyimpan data ini ?","Peringatan", JOptionPane.YES_NO_OPTION);
+                int flag = JOptionPane.showConfirmDialog(null, "Anda yakin ingin menyimpan data ini ?","Peringatan", JOptionPane.YES_NO_OPTION);
                 if(flag == 0){
+                    AnakEntity entity = new AnakEntity();
+                    
+                    entity.setKode_anak(kodeAnak.getText());
+                    entity.setNama_anak(namaAnak.getText());
+                    entity.setJenis_kelamin(jenisKelamin.getSelectedItem().toString());
+                    entity.setTempat_lahir(tempatLahir.getText());
+                    entity.setTanggal_lahir(tanggalLahir.getDateFormatString());
+                    entity.setTanggal_masuk_panti(tanggalMasukPanti.getDateFormatString());
+                    entity.setNama_orangtua_anak(orangTuaAnak.getText());
+                    entity.setPendidikan_terakhir(pendidikanTerakhir.getSelectedItem().toString());
+                    entity.setKeterangan(keterangan.getText());
+                    
+                    Map<String,Object> saveAnak = new HashMap<String, Object>();
+                    saveAnak = service.saveAnak(entity);
+                    
+                    if(!(boolean)saveAnak.get("status")){
+                        throw new Exception(saveAnak.get("message").toString());
+                    }else{
+                        JOptionPane.showMessageDialog(null, saveAnak.get("message").toString());
+                    }
+                }
             }
-        }
             
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, e.getMessage());
@@ -415,6 +461,10 @@ public class FormTambahAnak extends javax.swing.JFrame {
         tanggalLahir.setCalendar(null);
         tanggalMasukPanti.setCalendar(null);
     }//GEN-LAST:event_resetActionPerformed
+
+    private void orangTuaAnakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orangTuaAnakActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_orangTuaAnakActionPerformed
 
     /**
      * @param args the command line arguments
@@ -518,7 +568,33 @@ public class FormTambahAnak extends javax.swing.JFrame {
                            break;
                     }
                     
-                    date.setText(sdf.format(d)+", "+tanggal+" "+bulan_indo+" "+tahun);
+                    String hari_indo = "";
+                    
+                    switch(sdf.format(d)){
+                        case "Monday" :
+                           hari_indo = "Senin";
+                           break;
+                        case "Tuesday" :
+                           hari_indo = "Selasa";
+                           break;
+                        case "Wednesday" :
+                           hari_indo = "Rabu";
+                           break;
+                        case "Thursday" :
+                           hari_indo = "Kamis";
+                           break;
+                        case "Friday" :
+                           hari_indo = "Jum'at";
+                           break;
+                        case "Saturday" :
+                           hari_indo = "Sabtu";
+                           break;
+                        case "Sunday" :
+                           hari_indo = "Minggu";
+                           break;
+                    }
+                    
+                    date.setText(hari_indo+", "+tanggal+" "+bulan_indo+" "+tahun);
                     time.setText(hr.format(d)+":"+(mnt.format(d))+":"+sd.format(d));
 //                    tgl_resep.setText(""+sdf.format(d)+", "+tanggal+" / "+(bulan1+1)+" / "+tahun);
 //                    tgl_rekam_medis.setText(tanggal+"-"+(bulan1+1)+"-"+tahun);
@@ -550,6 +626,7 @@ public class FormTambahAnak extends javax.swing.JFrame {
     private javax.swing.JLabel date3;
     private javax.swing.JLabel date4;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -570,6 +647,7 @@ public class FormTambahAnak extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuKeluar;
     private javax.swing.JMenu menuLogout;
     private javax.swing.JTextField namaAnak;
+    private javax.swing.JTextField orangTuaAnak;
     private javax.swing.JComboBox pendidikanTerakhir;
     private javax.swing.JButton reset;
     private javax.swing.JButton simpan;

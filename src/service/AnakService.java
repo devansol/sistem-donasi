@@ -6,6 +6,9 @@
 package service;
 
 import dao.AnakDao;
+import entity.AnakEntity;
+import java.util.HashMap;
+import java.util.Map;
 import koneksi.Conn;
 import koneksi.KoneksiDb;
 
@@ -29,5 +32,28 @@ public class AnakService extends KoneksiDb {
             connect.closeConnection();
         }
         return kode_anak;
+    }
+    
+    public Map<String,Object> saveAnak(AnakEntity entity) throws Exception{
+        Map<String,Object> saveAnak = new HashMap<>();
+        Conn connect = new Conn();
+        try{
+            connect.conn = getConnection();
+            connect.conn.setAutoCommit(false);
+         
+            saveAnak = dao.saveAnak(entity, connect);
+            
+            if(!(boolean)saveAnak.get("status")){
+                throw new Exception(saveAnak.get("message").toString());
+            }else{
+                connect.conn.commit();
+            }
+        }catch(Exception e){
+            connect.conn.rollback();
+            throw new Exception(e.getMessage());
+        }finally{
+            connect.closeConnection();
+        }
+        return saveAnak;
     }
 }
