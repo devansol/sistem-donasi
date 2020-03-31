@@ -425,10 +425,13 @@ public class FormTambahAnak extends javax.swing.JFrame {
                     
                     entity.setKode_anak(kodeAnak.getText());
                     entity.setNama_anak(namaAnak.getText());
-                    entity.setJenis_kelamin(jenisKelamin.getSelectedItem().toString());
+                    
+                    String arr_jenis_kelamin[] = jenisKelamin.getSelectedItem().toString().trim().split("-");
+                    entity.setJenis_kelamin(arr_jenis_kelamin[0]);
+                   
                     entity.setTempat_lahir(tempatLahir.getText());
-                    entity.setTanggal_lahir(tanggalLahir.getDateFormatString());
-                    entity.setTanggal_masuk_panti(tanggalMasukPanti.getDateFormatString());
+                    entity.setTanggal_lahir(tanggalLahir.getDate().toString());
+                    entity.setTanggal_masuk_panti(tanggalMasukPanti.getDate().toString());
                     entity.setNama_orangtua_anak(orangTuaAnak.getText());
                     entity.setPendidikan_terakhir(pendidikanTerakhir.getSelectedItem().toString());
                     entity.setKeterangan(keterangan.getText());
