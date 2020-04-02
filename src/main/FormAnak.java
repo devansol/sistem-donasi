@@ -5,14 +5,18 @@
  */
 package main;
 
+import entity.AnakEntity;
 import entity.SessionEntity;
 import static java.lang.Thread.sleep;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import service.AnakService;
 
 /**
@@ -24,7 +28,7 @@ public class FormAnak extends javax.swing.JFrame {
     /**
      * Creates new form FormAnak
      */
-    
+    private AnakService service = new AnakService();
     public FormAnak() {
         initComponents();
 
@@ -53,7 +57,7 @@ public class FormAnak extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable()
+        tableAnak = new javax.swing.JTable()
         {
             public boolean isCellEditable(int rowIndex, int colIndex)
             {
@@ -90,7 +94,7 @@ public class FormAnak extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("List Data Anak");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableAnak.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -101,7 +105,7 @@ public class FormAnak extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tableAnak);
 
         jMenu1.setText("Aksi");
 
@@ -387,7 +391,29 @@ public class FormAnak extends javax.swing.JFrame {
         clock.start();        
     }
     
-    
+    private void loadDataAnak() throws Exception {
+        List<AnakEntity> list = new ArrayList<>();
+        DefaultTableModel model = new DefaultTableModel();
+        tableAnak.setModel(model);
+        model.getDataVector().removeAllElements();
+        model.addColumn("No");
+        model.addColumn("Kode Anak");
+        model.addColumn("Nama Anak");
+        try{    
+            list = service.getDataAnak();
+            int index=0;
+            for (AnakEntity entity : list) {
+                index+=1;
+                Object[] obj = new Object[3];
+                obj[0] = index;
+                obj[1] = entity.getKode_anak();
+                obj[2] = entity.getNama_anak();
+                model.addRow(obj);
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel date;
@@ -404,9 +430,9 @@ public class FormAnak extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JMenuItem menuKeluar;
     private javax.swing.JMenu menuLogout;
+    private javax.swing.JTable tableAnak;
     private javax.swing.JMenuItem tambahAnak;
     private javax.swing.JLabel time;
     private javax.swing.JMenuItem ubahData;

@@ -25,4 +25,5 @@ public class Query {
     public static final String saveAnak = "insert into mst_anak (kode_anak, nama_anak, jenis_kelamin,"
             + "tempat_lahir, tanggal_lahir, tanggal_masuk_panti,pendidikan_terakhir, nama_orangtua_anak,"
             + "keterangan) values (?,?,?,?,?,?,?,?,?)";
+    public static final String getAllDataAnak = "select * from mst_anak";
 }

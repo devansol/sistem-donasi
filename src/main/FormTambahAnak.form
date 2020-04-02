@@ -422,12 +422,12 @@
     </Component>
     <Component class="com.toedter.calendar.JDateChooser" name="tanggalLahir">
       <Properties>
-        <Property name="dateFormatString" type="java.lang.String" value="d-MMM-YYYY"/>
+        <Property name="dateFormatString" type="java.lang.String" value="yyyy-MM-dd"/>
       </Properties>
     </Component>
     <Component class="com.toedter.calendar.JDateChooser" name="tanggalMasukPanti">
       <Properties>
-        <Property name="dateFormatString" type="java.lang.String" value="d-MMM-YYYY"/>
+        <Property name="dateFormatString" type="java.lang.String" value="yyyy-MM-dd"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel10">

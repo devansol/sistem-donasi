@@ -7,7 +7,9 @@ package service;
 
 import dao.AnakDao;
 import entity.AnakEntity;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import koneksi.Conn;
 import koneksi.KoneksiDb;
@@ -55,5 +57,19 @@ public class AnakService extends KoneksiDb {
             connect.closeConnection();
         }
         return saveAnak;
+    }
+    
+    public List<AnakEntity> getDataAnak() throws Exception{
+        List<AnakEntity> list = new ArrayList<>();
+        Conn connect = new Conn();
+        try{
+            connect.conn = getConnection();
+            list = dao.getDataAnak(connect);
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }finally{
+            connect.closeConnection();
+        }
+                
     }
 }

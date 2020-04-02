@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import service.AnakService;
 
 /**
@@ -168,9 +169,9 @@ public class FormTambahAnak extends javax.swing.JFrame {
             }
         });
 
-        tanggalLahir.setDateFormatString("d-MMM-YYYY");
+        tanggalLahir.setDateFormatString("yyyy-MM-dd");
 
-        tanggalMasukPanti.setDateFormatString("d-MMM-YYYY");
+        tanggalMasukPanti.setDateFormatString("yyyy-MM-dd");
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel10.setText("Nama Orang Tua");
@@ -421,6 +422,10 @@ public class FormTambahAnak extends javax.swing.JFrame {
             }else{
                 int flag = JOptionPane.showConfirmDialog(null, "Anda yakin ingin menyimpan data ini ?","Peringatan", JOptionPane.YES_NO_OPTION);
                 if(flag == 0){
+                    
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+      
+                    
                     AnakEntity entity = new AnakEntity();
                     
                     entity.setKode_anak(kodeAnak.getText());
@@ -428,10 +433,9 @@ public class FormTambahAnak extends javax.swing.JFrame {
                     
                     String arr_jenis_kelamin[] = jenisKelamin.getSelectedItem().toString().trim().split("-");
                     entity.setJenis_kelamin(arr_jenis_kelamin[0]);
-                   
                     entity.setTempat_lahir(tempatLahir.getText());
-                    entity.setTanggal_lahir(tanggalLahir.getDate().toString());
-                    entity.setTanggal_masuk_panti(tanggalMasukPanti.getDate().toString());
+                    entity.setTanggal_lahir(((JTextField)tanggalLahir.getDateEditor().getUiComponent()).getText());
+                    entity.setTanggal_masuk_panti(((JTextField)tanggalMasukPanti.getDateEditor().getUiComponent()).getText());
                     entity.setNama_orangtua_anak(orangTuaAnak.getText());
                     entity.setPendidikan_terakhir(pendidikanTerakhir.getSelectedItem().toString());
                     entity.setKeterangan(keterangan.getText());
@@ -463,6 +467,7 @@ public class FormTambahAnak extends javax.swing.JFrame {
         keterangan.setText("");
         tanggalLahir.setCalendar(null);
         tanggalMasukPanti.setCalendar(null);
+        orangTuaAnak.setText("");
     }//GEN-LAST:event_resetActionPerformed
 
     private void orangTuaAnakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orangTuaAnakActionPerformed

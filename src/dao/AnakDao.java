@@ -7,7 +7,9 @@ package dao;
 
 import constand.Query;
 import entity.AnakEntity;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import koneksi.Conn;
 import static koneksi.KoneksiDb.getConnection;
@@ -74,5 +76,30 @@ public class AnakDao {
             throw new Exception(e.getMessage());
         }
         return map;
+    }
+    
+    public List<AnakEntity> getDataAnak(Conn connect) throws Exception {
+        List<AnakEntity> list = new ArrayList<>();
+        try{
+            connect.ps = connect.conn.prepareStatement(Query.getAllDataAnak);
+            connect.rs = connect.ps.executeQuery();
+            
+            while(connect.rs.next()){
+                AnakEntity entity = new AnakEntity();
+                entity.setKode_anak(connect.rs.getString(2));
+                entity.setNama_anak(connect.rs.getString(3));
+                entity.setJenis_kelamin(connect.rs.getString(4));
+                entity.setTempat_lahir(connect.rs.getString(5));
+                entity.setTanggal_lahir(connect.rs.getString(6));
+                entity.setTanggal_masuk_panti(connect.rs.getString(7));
+                entity.setPendidikan_terakhir(connect.rs.getString(8));
+                entity.setNama_orangtua_anak(connect.rs.getString(9));
+                entity.setKeterangan(connect.rs.getString(10));
+                list.add(entity);
+            }
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }
+        return list;
     }
 }
