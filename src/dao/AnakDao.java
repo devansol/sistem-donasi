@@ -58,7 +58,7 @@ public class AnakDao {
             connect.ps = connect.conn.prepareStatement(Query.saveAnak);
             connect.ps.setString(1, entity.getKode_anak());
             connect.ps.setString(2, entity.getNama_anak());
-            connect.ps.setString(3, entity.getJenis_kelamin());
+            connect.ps.setString(3, entity.getJenis_kelamin().trim());
             connect.ps.setString(4, entity.getTempat_lahir());
             connect.ps.setString(5, entity.getTanggal_lahir());
             connect.ps.setString(6, entity.getTanggal_masuk_panti());
@@ -86,6 +86,25 @@ public class AnakDao {
             
             while(connect.rs.next()){
                 AnakEntity entity = new AnakEntity();
+                entity.setKode_anak(connect.rs.getString(1));
+                entity.setNama_anak(connect.rs.getString(2));
+              
+                list.add(entity);
+            }
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }
+        return list;
+    }
+    
+    public AnakEntity getAnakByKode(String kode_anak, Conn connect) throws Exception{
+        AnakEntity entity = new AnakEntity();
+        try {
+            connect.ps = connect.conn.prepareStatement(Query.getDataAnakByKode);
+            connect.ps.setString(1, kode_anak);
+            connect.rs = connect.ps.executeQuery();
+            
+            while(connect.rs.next()){
                 entity.setKode_anak(connect.rs.getString(2));
                 entity.setNama_anak(connect.rs.getString(3));
                 entity.setJenis_kelamin(connect.rs.getString(4));
@@ -95,11 +114,71 @@ public class AnakDao {
                 entity.setPendidikan_terakhir(connect.rs.getString(8));
                 entity.setNama_orangtua_anak(connect.rs.getString(9));
                 entity.setKeterangan(connect.rs.getString(10));
+            } 
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+        return entity;
+    }
+    
+    public List<AnakEntity> getAnakByKodeOrNama(String param, Conn connect) throws Exception{
+        List<AnakEntity> list  = new ArrayList<>();
+        String params = "%" + param + "%";
+        try {
+            connect.ps = connect.conn.prepareStatement(Query.getDataAnakByKodeOrNama);
+            connect.ps.setString(1, params);
+            connect.ps.setString(2, params);
+            connect.rs = connect.ps.executeQuery();
+            
+            while(connect.rs.next()){
+                AnakEntity entity = new AnakEntity();
+                entity.setKode_anak(connect.rs.getString(1));
+                entity.setNama_anak(connect.rs.getString(2));
                 list.add(entity);
-            }
-        }catch(Exception e){
+            } 
+        } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
         return list;
+    }
+    
+    public Map<String,Object> ubahDataAnak(AnakEntity param , Conn connect) throws Exception{
+        Map<String,Object> response = new HashMap<>();
+        try {
+            connect.ps = connect.conn.prepareStatement(Query.ubahDataAnak);
+            connect.ps.setString(1, param.getNama_anak());
+            connect.ps.setString(2, param.getJenis_kelamin().trim());
+            connect.ps.setString(3, param.getTempat_lahir());
+            connect.ps.setString(4, param.getTanggal_lahir());
+            connect.ps.setString(5, param.getTanggal_masuk_panti());
+            connect.ps.setString(6, param.getPendidikan_terakhir());
+            connect.ps.setString(7, param.getNama_orangtua_anak());
+            connect.ps.setString(8, param.getKeterangan());
+            connect.ps.setString(9, param.getKode_anak());
+            connect.ps.executeUpdate();
+            response.put("message", "Data berhasil di ubah");
+            response.put("status", true);
+        } catch (Exception e) {
+            response.put("message", e.getMessage());
+            response.put("status", false);
+            throw new Exception(e.getMessage());
+        }
+        return response;
+    }
+    
+    public Map<String,Object> hapusDataAnak(String kode_anak, Conn connect) throws Exception{
+        Map<String,Object> response = new HashMap<>();
+        try{
+            connect.ps = connect.conn.prepareStatement(Query.hapusDataAnak);
+            connect.ps.setString(1, kode_anak);
+            connect.ps.executeUpdate();
+            response.put("message", "Data berhasil di hapus !");
+            response.put("status", true);
+        }catch(Exception e){
+            response.put("message", e.getMessage());
+            response.put("status", false);
+            throw new Exception(e.getMessage());
+        }
+        return response;
     }
 }

@@ -12,6 +12,7 @@ package entity;
 public class SessionEntity {
        private static String nama_lengkap;
        private static int status;
+       private static String kode_anak;
 
     /**
      * @return the nama_lengkap
@@ -39,6 +40,20 @@ public class SessionEntity {
      */
     public static void setStatus(int aStatus) {
         status = aStatus;
+    }
+
+    /**
+     * @return the kode_anak
+     */
+    public static String getKode_anak() {
+        return kode_anak;
+    }
+
+    /**
+     * @param aKode_anak the kode_anak to set
+     */
+    public static void setKode_anak(String aKode_anak) {
+        kode_anak = aKode_anak;
     }
        
        

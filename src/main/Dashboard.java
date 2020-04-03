@@ -5,8 +5,6 @@
  */
 package main;
 
-import com.sun.java.accessibility.util.Translator;
-import entity.AdminEntity;
 import entity.SessionEntity;
 import static java.lang.Thread.sleep;
 import java.text.SimpleDateFormat;
@@ -234,11 +232,17 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
-        FormAnak form = new FormAnak();
-
-        form.setVisible(true);
+        FormAnak form;
+        try {
+            form = new FormAnak();
+            form.setVisible(true);
         form.setTitle("Form Anak");
         this.setVisible(false);
+        } catch (Exception ex) {
+            Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenu5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu5ActionPerformed
@@ -247,10 +251,16 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void menuDonasiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuDonasiActionPerformed
         // TODO add your handling code here:
-        FormDonasi donasi = new FormDonasi();
-        donasi.setVisible(true);
-        donasi.setTitle("Form Donasi");
-        this.setVisible(false);
+        FormDonasi donasi;
+        try {
+            donasi = new FormDonasi();
+            donasi.setVisible(true);
+            donasi.setTitle("Form Donasi");
+            this.setVisible(false);
+        } catch (Exception ex) {
+            Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }//GEN-LAST:event_menuDonasiActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed

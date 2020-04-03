@@ -13,6 +13,7 @@ import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import service.DonasiService;
 
 /**
  *
@@ -23,12 +24,14 @@ public class FormDonasi extends javax.swing.JFrame {
     /**
      * Creates new form FormDonasi
      */
-    public FormDonasi() {
+    private final DonasiService service = new DonasiService();
+    public FormDonasi() throws Exception {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.tanggalSekarang();
         menuLogout.setText("User Login : " + SessionEntity.getNama_lengkap());
+        
     }
 
     /**
@@ -218,6 +221,16 @@ public class FormDonasi extends javax.swing.JFrame {
 
     private void tambahDonasiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tambahDonasiActionPerformed
         // TODO add your handling code here:
+        this.setVisible(false);
+        FormTambahDonasi form;
+        try {
+            form = new FormTambahDonasi();
+            form.setVisible(true);
+            form.setTitle("Form Tambah Donasi");
+        } catch (Exception ex) {
+            Logger.getLogger(FormDonasi.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }//GEN-LAST:event_tambahDonasiActionPerformed
 
     private void menuKeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuKeluarActionPerformed
@@ -285,7 +298,12 @@ public class FormDonasi extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FormDonasi().setVisible(true);
+                try {
+                    FormDonasi form = new FormDonasi();
+                    form.setVisible(true);
+                } catch (Exception ex) {
+                    Logger.getLogger(FormDonasi.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
@@ -390,6 +408,7 @@ public class FormDonasi extends javax.swing.JFrame {
         };        
         clock.start();        
     }
+            
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel date;

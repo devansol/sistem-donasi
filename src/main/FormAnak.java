@@ -12,11 +12,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import main.modal.ModalViewDataAnak;
 import service.AnakService;
 
 /**
@@ -29,13 +32,14 @@ public class FormAnak extends javax.swing.JFrame {
      * Creates new form FormAnak
      */
     private AnakService service = new AnakService();
-    public FormAnak() {
+    public FormAnak() throws Exception {
         initComponents();
 
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.tanggalSekarang();
         menuLogout.setText("User Login : " + SessionEntity.getNama_lengkap());
+        this.loadDataAnak();
     }
 
     /**
@@ -64,11 +68,17 @@ public class FormAnak extends javax.swing.JFrame {
                 return false; //Disallow the editing of any cell
             }
         };
+        jLabel3 = new javax.swing.JLabel();
+        inpCari = new javax.swing.JTextField();
+        btnCari = new javax.swing.JButton();
+        btnRefresh = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        lihatData = new javax.swing.JMenuItem();
         tambahAnak = new javax.swing.JMenuItem();
-        hapusDataAnak = new javax.swing.JMenuItem();
         ubahData = new javax.swing.JMenuItem();
+        hapusDataAnak = new javax.swing.JMenuItem();
         menuKeluar = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         menuLogout = new javax.swing.JMenu();
@@ -105,9 +115,43 @@ public class FormAnak extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tableAnak.setEditingColumn(0);
+        tableAnak.setEditingRow(0);
+        tableAnak.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableAnakMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tableAnak);
 
+        jLabel3.setText("Cari Anak");
+
+        btnCari.setText("Cari");
+        btnCari.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCariActionPerformed(evt);
+            }
+        });
+
+        btnRefresh.setText("Refresh");
+        btnRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        jLabel4.setText("Info : Mencari data anak menggunakan KODE ANAK atau NAMA ANAK.");
+
         jMenu1.setText("Aksi");
+
+        lihatData.setText("Lihat Data Anak");
+        lihatData.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lihatDataActionPerformed(evt);
+            }
+        });
+        jMenu1.add(lihatData);
 
         tambahAnak.setText("Tambah Data Anak");
         tambahAnak.addActionListener(new java.awt.event.ActionListener() {
@@ -117,11 +161,21 @@ public class FormAnak extends javax.swing.JFrame {
         });
         jMenu1.add(tambahAnak);
 
-        hapusDataAnak.setText("Hapus Data Anak");
-        jMenu1.add(hapusDataAnak);
-
         ubahData.setText("Ubah Data Anak");
+        ubahData.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ubahDataActionPerformed(evt);
+            }
+        });
         jMenu1.add(ubahData);
+
+        hapusDataAnak.setText("Hapus Data Anak");
+        hapusDataAnak.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hapusDataAnakActionPerformed(evt);
+            }
+        });
+        jMenu1.add(hapusDataAnak);
 
         menuKeluar.setText("Keluar");
         menuKeluar.addActionListener(new java.awt.event.ActionListener() {
@@ -181,8 +235,19 @@ public class FormAnak extends javax.swing.JFrame {
                 .addComponent(jScrollPane1)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(245, 245, 245)
+                .addContainerGap()
                 .addComponent(jLabel1)
+                .addGap(56, 56, 56)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(inpCari, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnCari)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnRefresh)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -204,10 +269,17 @@ public class FormAnak extends javax.swing.JFrame {
                 .addGap(14, 14, 14)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel3)
+                    .addComponent(inpCari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCari)
+                    .addComponent(btnRefresh))
+                .addGap(3, 3, 3)
+                .addComponent(jLabel4)
+                .addGap(1, 1, 1)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(133, Short.MAX_VALUE))
         );
 
         pack();
@@ -255,6 +327,114 @@ public class FormAnak extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_menuLogoutActionPerformed
 
+    private void tableAnakMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableAnakMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tableAnakMouseClicked
+
+    private void btnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariActionPerformed
+        // TODO add your handling code here:
+        List<AnakEntity> list  = new ArrayList<>();
+        DefaultTableModel model = new DefaultTableModel();
+        tableAnak.setModel(model);
+        model.addColumn("No");
+        model.addColumn("Kode Anak");
+        model.addColumn("Nama Anak");
+        try{
+            list = service.getDataAnakByKodeOrNama(inpCari.getText());
+            if(list.size() == 0){
+                throw new Exception("Data tidak ditemukan !");
+            }
+            int index=0;
+            for(AnakEntity entity : list){
+                index+=1;
+                Object[] obj = new Object[3];
+                obj[0] = index;
+                obj[1] = entity.getKode_anak();
+                obj[2] = entity.getNama_anak();
+                model.addRow(obj);
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }//GEN-LAST:event_btnCariActionPerformed
+
+    private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
+        try {
+            // TODO add your handling code here:
+            this.loadDataAnak();
+            inpCari.setText("");
+        } catch (Exception ex) {
+            Logger.getLogger(FormAnak.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+    }//GEN-LAST:event_btnRefreshActionPerformed
+
+    private void lihatDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lihatDataActionPerformed
+        // TODO add your handling code here:
+        int i = tableAnak.getSelectedRow();
+       
+        try {
+            if(i == -1){
+                throw new Exception("Pilih data terlebih dahulu pada tabel!");
+            }
+            SessionEntity.setKode_anak(tableAnak.getValueAt(i, 1).toString());
+            ModalViewDataAnak modal;
+            this.setVisible(false);
+            modal = new ModalViewDataAnak();
+            modal.setTitle("Form View Data Anak");
+            modal.setVisible(true);
+        } catch (Exception ex) {
+           JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+        
+    }//GEN-LAST:event_lihatDataActionPerformed
+
+    private void ubahDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ubahDataActionPerformed
+        // TODO add your handling code here:
+        int i = tableAnak.getSelectedRow();
+        Map<String,Object> response = new HashMap<String, Object>();
+        try{
+            if(i == -1){
+                throw new Exception("Pilih data terlebih dahulu pada tabel!");
+            }
+            SessionEntity.setKode_anak(tableAnak.getValueAt(i,1).toString());
+            this.setVisible(false);
+            FormUbahDataAnak form = new FormUbahDataAnak();
+            form.setVisible(true);
+            form.setTitle("Form Ubah Data Anak");
+            
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+                
+    }//GEN-LAST:event_ubahDataActionPerformed
+
+    private void hapusDataAnakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hapusDataAnakActionPerformed
+         
+        // TODO add your handling code here:
+        int i = tableAnak.getSelectedRow();
+        Map<String,Object> response = new HashMap<String, Object>();
+        try{
+            if(i == -1){
+                throw new Exception("Pilih data terlebih dahulu pada tabel!");
+            }
+            int flag = JOptionPane.showConfirmDialog(null, "Anda yakin ingin menghapus data ini ?", "Peringatan", JOptionPane.YES_NO_OPTION);
+            if(flag == 0){
+                response = service.hapusDataAnak(tableAnak.getValueAt(i, 1).toString());
+            
+                if(!(boolean)response.get("status")){
+                    throw new Exception(response.get("message").toString());
+                }else{
+                    JOptionPane.showMessageDialog(null, response.get("message").toString());
+                    this.loadDataAnak();
+                }
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+                
+    }//GEN-LAST:event_hapusDataAnakActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -285,7 +465,13 @@ public class FormAnak extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FormAnak().setVisible(true);
+               
+                try {
+                    FormAnak form = new FormAnak();
+                    form.setVisible(true);
+                } catch (Exception ex) {
+                    Logger.getLogger(FormAnak.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
@@ -416,20 +602,26 @@ public class FormAnak extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCari;
+    private javax.swing.JButton btnRefresh;
     private javax.swing.JLabel date;
     private javax.swing.JLabel date1;
     private javax.swing.JLabel date2;
     private javax.swing.JLabel date3;
     private javax.swing.JLabel date4;
     private javax.swing.JMenuItem hapusDataAnak;
+    private javax.swing.JTextField inpCari;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JMenuItem lihatData;
     private javax.swing.JMenuItem menuKeluar;
     private javax.swing.JMenu menuLogout;
     private javax.swing.JTable tableAnak;

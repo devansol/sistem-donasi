@@ -447,6 +447,8 @@ public class FormTambahAnak extends javax.swing.JFrame {
                         throw new Exception(saveAnak.get("message").toString());
                     }else{
                         JOptionPane.showMessageDialog(null, saveAnak.get("message").toString());
+                        this.loadKodeAnak();
+                        this.clear();
                     }
                 }
             }
@@ -460,14 +462,7 @@ public class FormTambahAnak extends javax.swing.JFrame {
 
     private void resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetActionPerformed
         // TODO add your handling code here:
-        namaAnak.setText("");
-        jenisKelamin.setSelectedIndex(0);
-        tempatLahir.setText("");
-        pendidikanTerakhir.setSelectedIndex(0);
-        keterangan.setText("");
-        tanggalLahir.setCalendar(null);
-        tanggalMasukPanti.setCalendar(null);
-        orangTuaAnak.setText("");
+        this.clear();
     }//GEN-LAST:event_resetActionPerformed
 
     private void orangTuaAnakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orangTuaAnakActionPerformed
@@ -625,6 +620,17 @@ public class FormTambahAnak extends javax.swing.JFrame {
          }catch(Exception e){
              JOptionPane.showMessageDialog(null, e.getMessage());
          }
+    }
+    
+    void clear(){
+        namaAnak.setText("");
+        jenisKelamin.setSelectedIndex(0);
+        tempatLahir.setText("");
+        pendidikanTerakhir.setSelectedIndex(0);
+        keterangan.setText("");
+        tanggalLahir.setCalendar(null);
+        tanggalMasukPanti.setCalendar(null);
+        orangTuaAnak.setText("");
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
