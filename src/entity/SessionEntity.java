@@ -13,6 +13,11 @@ public class SessionEntity {
        private static String nama_lengkap;
        private static int status;
        private static String kode_anak;
+       private static String no_donasi;
+       private static String no_adopsi;
+       
+       
+       
 
     /**
      * @return the nama_lengkap
@@ -54,6 +59,34 @@ public class SessionEntity {
      */
     public static void setKode_anak(String aKode_anak) {
         kode_anak = aKode_anak;
+    }
+
+    /**
+     * @return the no_donasi
+     */
+    public static String getNo_donasi() {
+        return no_donasi;
+    }
+
+    /**
+     * @param aNo_donasi the no_donasi to set
+     */
+    public static void setNo_donasi(String aNo_donasi) {
+        no_donasi = aNo_donasi;
+    }
+
+    /**
+     * @return the no_adopsi
+     */
+    public static String getNo_adopsi() {
+        return no_adopsi;
+    }
+
+    /**
+     * @param aNo_adopsi the no_adopsi to set
+     */
+    public static void setNo_adopsi(String aNo_adopsi) {
+        no_adopsi = aNo_adopsi;
     }
        
        

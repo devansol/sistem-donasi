@@ -5,14 +5,22 @@
  */
 package main;
 
+import entity.DonasiEntity;
 import entity.SessionEntity;
 import static java.lang.Thread.sleep;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import main.modal.ModalViewDataAnak;
+import main.modal.ModalViewDataDonasi;
 import service.DonasiService;
 
 /**
@@ -31,6 +39,7 @@ public class FormDonasi extends javax.swing.JFrame {
         this.setResizable(false);
         this.tanggalSekarang();
         menuLogout.setText("User Login : " + SessionEntity.getNama_lengkap());
+        this.geAllDataDonasi();
         
     }
 
@@ -49,7 +58,7 @@ public class FormDonasi extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable()
+        tableDonasi = new javax.swing.JTable()
         {
             public boolean isCellEditable(int rowIndex, int colIndex)
             {
@@ -60,9 +69,13 @@ public class FormDonasi extends javax.swing.JFrame {
         time = new javax.swing.JLabel();
         date1 = new javax.swing.JLabel();
         date2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jumlahDonasi = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         tambahDonasi = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         hapusDataAnak = new javax.swing.JMenuItem();
         ubahData = new javax.swing.JMenuItem();
         menuKeluar = new javax.swing.JMenuItem();
@@ -82,7 +95,7 @@ public class FormDonasi extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("List Data Donasi");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableDonasi.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -93,7 +106,7 @@ public class FormDonasi extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tableDonasi);
 
         date.setText("Tanggal");
 
@@ -102,6 +115,15 @@ public class FormDonasi extends javax.swing.JFrame {
         date1.setText("Tanggal");
 
         date2.setText(":");
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel3.setText("Total Jumlah Donasi : ");
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel4.setText("Rp.");
+
+        jumlahDonasi.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jumlahDonasi.setText("Nominal");
 
         jMenu1.setText("Aksi");
 
@@ -112,6 +134,14 @@ public class FormDonasi extends javax.swing.JFrame {
             }
         });
         jMenu1.add(tambahDonasi);
+
+        jMenuItem1.setText("Lihat Data Donasi");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
 
         hapusDataAnak.setText("Hapus Data Donasi");
         hapusDataAnak.addActionListener(new java.awt.event.ActionListener() {
@@ -187,8 +217,17 @@ public class FormDonasi extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 579, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(245, 245, 245)
-                .addComponent(jLabel1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(245, 245, 245)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jumlahDonasi, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -212,8 +251,13 @@ public class FormDonasi extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(jumlahDonasi))
+                .addContainerGap(102, Short.MAX_VALUE))
         );
 
         pack();
@@ -245,10 +289,45 @@ public class FormDonasi extends javax.swing.JFrame {
 
     private void hapusDataAnakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hapusDataAnakActionPerformed
         // TODO add your handling code here:
+         int i = tableDonasi.getSelectedRow();
+        Map<String,Object> response = new HashMap<String, Object>();
+        try{
+            if(i == -1){
+                throw new Exception("Pilih data terlebih dahulu pada tabel!");
+            }
+            int flag = JOptionPane.showConfirmDialog(null, "Anda yakin ingin menghapus data ini ?", "Peringatan", JOptionPane.YES_NO_OPTION);
+            if(flag == 0){
+                response = service.deleteDonasi(tableDonasi.getValueAt(i, 1).toString());
+            
+                if(!(boolean)response.get("status")){
+                    throw new Exception(response.get("message").toString());
+                }else{
+                    JOptionPane.showMessageDialog(null, response.get("message").toString());
+                    this.geAllDataDonasi();
+                }
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
     }//GEN-LAST:event_hapusDataAnakActionPerformed
 
     private void ubahDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ubahDataActionPerformed
         // TODO add your handling code here:
+        int i = tableDonasi.getSelectedRow();
+        Map<String,Object> response = new HashMap<String, Object>();
+        try{
+            if(i == -1){
+                throw new Exception("Pilih data terlebih dahulu pada tabel!");
+            }
+            SessionEntity.setNo_donasi(tableDonasi.getValueAt(i,1).toString());
+            this.setVisible(false);
+            FormUbahDataDonasi form = new FormUbahDataDonasi();
+            form.setVisible(true);
+            form.setTitle("Form Ubah Data Anak");
+            
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
     }//GEN-LAST:event_ubahDataActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
@@ -267,6 +346,26 @@ public class FormDonasi extends javax.swing.JFrame {
     private void menuLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuLogoutActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_menuLogoutActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        
+        int i = tableDonasi.getSelectedRow();
+       
+        try {
+            if(i == -1){
+                throw new Exception("Pilih data terlebih dahulu pada tabel!");
+            }
+            SessionEntity.setNo_donasi(tableDonasi.getValueAt(i, 1).toString());
+            ModalViewDataDonasi modal;
+            this.setVisible(false);
+            modal = new ModalViewDataDonasi();
+            modal.setTitle("Form View Data Donasi");
+            modal.setVisible(true);
+        } catch (Exception ex) {
+           JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -408,6 +507,33 @@ public class FormDonasi extends javax.swing.JFrame {
         };        
         clock.start();        
     }
+    
+    private void geAllDataDonasi() throws Exception {
+        List<DonasiEntity> list = new ArrayList<>();
+        DefaultTableModel model = new DefaultTableModel();
+        tableDonasi.setModel(model);
+        model.getDataVector().removeAllElements();
+        model.addColumn("No");
+        model.addColumn("Nomor Donasi");
+        model.addColumn("Nama Donatur");
+        model.addColumn("Jumlah Donasi");
+        try {
+            list = service.getAllDataDonasi();
+            int index=0;
+            for (DonasiEntity entity : list) {
+               index+=1;
+                Object[] obj = new Object[4];
+                obj[0] = index;
+                obj[1] = entity.getNo_donasi();
+                obj[2] = entity.getNama_donatur();
+                obj[3] = entity.getJumlah_donasi();
+                model.addRow(obj);
+            }
+            jumlahDonasi.setText(list.get(0).getTotal_donasi() + "");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }
             
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -419,15 +545,19 @@ public class FormDonasi extends javax.swing.JFrame {
     private javax.swing.JMenuItem hapusDataAnak;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JLabel jumlahDonasi;
     private javax.swing.JMenuItem menuKeluar;
     private javax.swing.JMenu menuLogout;
+    private javax.swing.JTable tableDonasi;
     private javax.swing.JMenuItem tambahDonasi;
     private javax.swing.JLabel time;
     private javax.swing.JMenuItem ubahData;

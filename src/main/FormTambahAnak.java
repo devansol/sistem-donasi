@@ -120,6 +120,11 @@ public class FormTambahAnak extends javax.swing.JFrame {
                 namaAnakActionPerformed(evt);
             }
         });
+        namaAnak.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                namaAnakKeyTyped(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel4.setText("Jenis Kelamin");
@@ -179,6 +184,11 @@ public class FormTambahAnak extends javax.swing.JFrame {
         orangTuaAnak.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 orangTuaAnakActionPerformed(evt);
+            }
+        });
+        orangTuaAnak.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                orangTuaAnakKeyTyped(evt);
             }
         });
 
@@ -468,6 +478,18 @@ public class FormTambahAnak extends javax.swing.JFrame {
     private void orangTuaAnakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orangTuaAnakActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_orangTuaAnakActionPerformed
+
+    private void namaAnakKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_namaAnakKeyTyped
+        // TODO add your handling code here:
+        FunctionValidasi func = new FunctionValidasi();
+        func.filterangka(evt, "Field Nama Anak tidak boleh input angka !");
+    }//GEN-LAST:event_namaAnakKeyTyped
+
+    private void orangTuaAnakKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_orangTuaAnakKeyTyped
+        // TODO add your handling code here:
+        FunctionValidasi func = new FunctionValidasi();
+        func.filterangka(evt, "Field Nama Orang Tua tidak boleh input angka !");
+    }//GEN-LAST:event_orangTuaAnakKeyTyped
 
     /**
      * @param args the command line arguments

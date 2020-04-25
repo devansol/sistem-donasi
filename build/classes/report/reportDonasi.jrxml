@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="tanggal1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="tanggal2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select no_donasi, nama_donatur,jumlah_donasi, create_date, (select sum(jumlah_donasi) from mst_donasi) as total_donasi  from mst_donasi where create_date BETWEEN date($P{tanggal1}) and date($P{tanggal2});]]>
+	</queryString>
+	<field name="no_donasi" class="java.lang.String"/>
+	<field name="nama_donatur" class="java.lang.String"/>
+	<field name="jumlah_donasi" class="java.lang.Double"/>
+	<field name="create_date" class="java.sql.Date"/>
+	<field name="total_donasi" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="105" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="76" width="555" height="1"/>
+				<graphicElement>
+					<pen lineWidth="2.0"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="260" y="0" width="144" height="33"/>
+				<textElement>
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Laporan Donasi]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="171" y="32" width="64" height="21"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Tanggal : ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="235" y="33" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{tanggal1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="305" y="32" width="30" height="21"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[s/d]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="344" y="33" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{tanggal2}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="7" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="25" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="111" height="20"/>
+				<textElement/>
+				<text><![CDATA[No Donasi]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="147" y="0" width="111" height="20"/>
+				<textElement/>
+				<text><![CDATA[Nama Donatur]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="293" y="0" width="111" height="20"/>
+				<textElement/>
+				<text><![CDATA[Jumlah Donasi]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="444" y="0" width="111" height="20"/>
+				<textElement/>
+				<text><![CDATA[Tanggal Donasi]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="20" width="555" height="1"/>
+				<graphicElement>
+					<pen lineWidth="2.0" lineStyle="Double"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="27" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="111" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{no_donasi}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="147" y="0" width="111" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{nama_donatur}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="293" y="0" width="111" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{jumlah_donasi}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="444" y="0" width="111" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{create_date}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="20" width="555" height="1"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="10" width="111" height="35"/>
+				<textElement>
+					<font size="19"/>
+				</textElement>
+				<text><![CDATA[Total Donasi]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="153" y="10" width="182" height="35"/>
+				<textElement>
+					<font size="19"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_donasi}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="127" y="10" width="14" height="35"/>
+				<textElement>
+					<font size="19"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

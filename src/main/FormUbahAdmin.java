@@ -106,6 +106,12 @@ public class FormUbahAdmin extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel7.setText("Status");
 
+        inpNamaLengkap.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                inpNamaLengkapKeyTyped(evt);
+            }
+        });
+
         slcStatus.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "--Pilih--", "1 - Full Access", "2 - Not Full Access" }));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -371,6 +377,12 @@ public class FormUbahAdmin extends javax.swing.JFrame {
     private void menuLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuLogoutActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_menuLogoutActionPerformed
+
+    private void inpNamaLengkapKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inpNamaLengkapKeyTyped
+        // TODO add your handling code here:
+        FunctionValidasi func = new FunctionValidasi();
+        func.filterangka(evt, "Field Nama Lengkap Admin tidak boleh input angka !");
+    }//GEN-LAST:event_inpNamaLengkapKeyTyped
 
     /**
      * @param args the command line arguments

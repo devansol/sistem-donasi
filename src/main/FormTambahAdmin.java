@@ -90,6 +90,12 @@ public class FormTambahAdmin extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel2.setText("Form Tambah Admin");
 
+        inpNamaLengkap.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                inpNamaLengkapKeyTyped(evt);
+            }
+        });
+
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setText("Username");
 
@@ -351,6 +357,12 @@ public class FormTambahAdmin extends javax.swing.JFrame {
     private void menuLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuLogoutActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_menuLogoutActionPerformed
+
+    private void inpNamaLengkapKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inpNamaLengkapKeyTyped
+        // TODO add your handling code here:
+        FunctionValidasi func = new FunctionValidasi();
+        func.filterangka(evt, "Field Nama Lengkap Admin tidak boleh input angka !");
+    }//GEN-LAST:event_inpNamaLengkapKeyTyped
 
     /**
      * @param args the command line arguments

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 02, 2020 at 03:01 AM
+-- Generation Time: Apr 25, 2020 at 09:43 AM
 -- Server version: 10.1.9-MariaDB
 -- PHP Version: 5.5.30
 
@@ -19,6 +19,31 @@ SET time_zone = "+00:00";
 --
 -- Database: `sistemdonasi`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `mst_adopsi`
+--
+
+CREATE TABLE `mst_adopsi` (
+  `id_adopsi` int(11) NOT NULL,
+  `no_adopsi` varchar(20) NOT NULL,
+  `nama_adopsi` varchar(50) NOT NULL,
+  `alamat` text NOT NULL,
+  `no_telp` varchar(13) NOT NULL,
+  `pekerjaan` varchar(50) NOT NULL,
+  `kode_anak` varchar(6) NOT NULL,
+  `keterangan` text NOT NULL,
+  `create_date` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `mst_adopsi`
+--
+
+INSERT INTO `mst_adopsi` (`id_adopsi`, `no_adopsi`, `nama_adopsi`, `alamat`, `no_telp`, `pekerjaan`, `kode_anak`, `keterangan`, `create_date`) VALUES
+(2, 'AD/04/2020/0001', 'yfs', 'zxc', '123213', 'Pegawai Negeri Sipil', 'KA0001', 'asd', '2020-04-25');
 
 -- --------------------------------------------------------
 
@@ -44,7 +69,33 @@ CREATE TABLE `mst_anak` (
 --
 
 INSERT INTO `mst_anak` (`id_anak`, `kode_anak`, `nama_anak`, `jenis_kelamin`, `tempat_lahir`, `tanggal_lahir`, `tanggal_masuk_panti`, `pendidikan_terakhir`, `nama_orangtua_anak`, `keterangan`) VALUES
-(1, 'KA0001', 'Daus', 'L ', 'Bekasi', '2020-04-02', '2020-04-10', 'SD', 'Kin', '');
+(1, 'KA0001', 'Daus', 'L', 'Bekasi', '2020-04-02', '2020-04-10', 'SD', 'as', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `mst_donasi`
+--
+
+CREATE TABLE `mst_donasi` (
+  `id_donasi` int(11) NOT NULL,
+  `no_donasi` varchar(30) NOT NULL,
+  `nama_donatur` varchar(50) NOT NULL,
+  `alamat_donatur` text NOT NULL,
+  `jumlah_donasi` double NOT NULL,
+  `no_telepon` varchar(15) NOT NULL,
+  `bukti_pembayaran` text NOT NULL,
+  `keterangan` text NOT NULL,
+  `create_date` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `mst_donasi`
+--
+
+INSERT INTO `mst_donasi` (`id_donasi`, `no_donasi`, `nama_donatur`, `alamat_donatur`, `jumlah_donasi`, `no_telepon`, `bukti_pembayaran`, `keterangan`, `create_date`) VALUES
+(1, 'DN/04/2020/0001', 'asd', 'asd', 23, '12', 'Ttd feri png.png', 'asd', '2020-04-16'),
+(2, 'DN/04/2020/0002', 'Jajang', 'Jaya	', 1000000, '08787894818', '16-166456_islamic-corners-ornamentsart-ornamen-islami-clipart.png', 'pke', '2020-04-16');
 
 -- --------------------------------------------------------
 
@@ -73,10 +124,23 @@ INSERT INTO `mst_login` (`id_login`, `username`, `password`, `nama_lengkap`, `st
 --
 
 --
+-- Indexes for table `mst_adopsi`
+--
+ALTER TABLE `mst_adopsi`
+  ADD PRIMARY KEY (`id_adopsi`);
+
+--
 -- Indexes for table `mst_anak`
 --
 ALTER TABLE `mst_anak`
   ADD PRIMARY KEY (`id_anak`);
+
+--
+-- Indexes for table `mst_donasi`
+--
+ALTER TABLE `mst_donasi`
+  ADD PRIMARY KEY (`id_donasi`),
+  ADD UNIQUE KEY `no_donasi` (`no_donasi`);
 
 --
 -- Indexes for table `mst_login`
@@ -89,10 +153,20 @@ ALTER TABLE `mst_login`
 --
 
 --
+-- AUTO_INCREMENT for table `mst_adopsi`
+--
+ALTER TABLE `mst_adopsi`
+  MODIFY `id_adopsi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
 -- AUTO_INCREMENT for table `mst_anak`
 --
 ALTER TABLE `mst_anak`
   MODIFY `id_anak` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `mst_donasi`
+--
+ALTER TABLE `mst_donasi`
+  MODIFY `id_donasi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `mst_login`
 --

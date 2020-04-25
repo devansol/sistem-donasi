@@ -61,6 +61,7 @@ public class Dashboard extends javax.swing.JFrame {
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         menuDonasi = new javax.swing.JMenuItem();
+        menuAdopsi = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
@@ -133,14 +134,27 @@ public class Dashboard extends javax.swing.JFrame {
         });
         jMenu5.add(menuDonasi);
 
+        menuAdopsi.setText("Data Adopsi");
+        menuAdopsi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuAdopsiActionPerformed(evt);
+            }
+        });
+        jMenu5.add(menuAdopsi);
+
         menuBar.add(jMenu5);
 
         jMenu6.setText("Laporan");
 
-        jMenuItem2.setText("Laporan Data Anak");
+        jMenuItem2.setText("Laporan Data Adopsi");
         jMenu6.add(jMenuItem2);
 
         jMenuItem4.setText("Laporan Donasi");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
         jMenu6.add(jMenuItem4);
 
         menuBar.add(jMenu6);
@@ -276,6 +290,24 @@ public class Dashboard extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void menuAdopsiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAdopsiActionPerformed
+        // TODO add your handling code here:
+        FormAdopsi form;
+        try {
+            this.setVisible(false);
+            form = new FormAdopsi();
+            form.setVisible(true);
+            form.setTitle("Form Adopsi");
+        } catch (Exception ex) {
+            Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_menuAdopsiActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -438,6 +470,7 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JMenuItem menuAdopsi;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem menuDonasi;
     private javax.swing.JMenu menuLogout;

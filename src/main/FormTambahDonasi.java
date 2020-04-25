@@ -9,9 +9,16 @@ import entity.DonasiEntity;
 import entity.SessionEntity;
 import java.io.File;
 import static java.lang.Thread.sleep;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -36,6 +43,7 @@ public class FormTambahDonasi extends javax.swing.JFrame {
         menuLogout.setText("User Login : " + SessionEntity.getNama_lengkap());
         this.loadNoDonasi();
         noDonasi.setEditable(false);
+        buktiPembayaran.setEditable(false);
     }
 
     /**
@@ -108,6 +116,11 @@ public class FormTambahDonasi extends javax.swing.JFrame {
         jLabel3.setText("Nama Donatur");
 
         namaDonatur.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        namaDonatur.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                namaDonaturKeyTyped(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel4.setText("Alamat Donatur");
@@ -126,8 +139,18 @@ public class FormTambahDonasi extends javax.swing.JFrame {
         jScrollPane1.setViewportView(alamatDonatur);
 
         jumlahDonasi.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jumlahDonasi.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jumlahDonasiKeyTyped(evt);
+            }
+        });
 
         noTelepon.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        noTelepon.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                noTeleponKeyTyped(evt);
+            }
+        });
 
         browseFile.setText("Cari");
         browseFile.addActionListener(new java.awt.event.ActionListener() {
@@ -146,6 +169,11 @@ public class FormTambahDonasi extends javax.swing.JFrame {
         });
 
         reset.setText("Reset");
+        reset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetActionPerformed(evt);
+            }
+        });
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel8.setText("Keterangan");
@@ -374,20 +402,72 @@ public class FormTambahDonasi extends javax.swing.JFrame {
             }else{
                 int flag = JOptionPane.showConfirmDialog(null, "Anda yakin ingin menyimpan data ini ? ","Konfirmasi",JOptionPane.YES_NO_OPTION);
                 if(flag == 0){
-
+                    
                     DonasiEntity entity = new DonasiEntity();
                     entity.setNo_donasi(noDonasi.getText());
                     entity.setNama_donatur(namaDonatur.getText());
                     entity.setAlamat_donatur(alamatDonatur.getText());
                     entity.setJumlah_donasi(Double.parseDouble(jumlahDonasi.getText()));
-                    entity.setBukti_pembayaran(buktiPembayaran.getText());
                     entity.setKeterangan(keterangan.getText());
+                    entity.setNo_telp(noTelepon.getText());
+                    String[] arr = buktiPembayaran.getText().split(":");
+                    String[] array = arr[1].split("\\\\");
+                    String[] format = array[array.length - 1].split("\\.");
+                    entity.setBukti_pembayaran(array[array.length - 1]);
+                    if(format[format.length - 1 ].equals("jpeg") || format[format.length - 1 ].equals("jpg") 
+                            || format[format.length - 1 ].equals("png")){
+                        Map<String,Object> response = new HashMap<>();
+                        
+                        response = service.saveDonasi(entity);
+                        
+                        if(!(boolean)response.get("status")){
+                            throw new Exception(response.get("message").toString());
+                        }else{
+                            JOptionPane.showMessageDialog(null, response.get("message").toString());
+                            Path temp = Files.copy(Paths.get(buktiPembayaran.getText()),Paths.get("img/"+array[array.length - 1]), StandardCopyOption.REPLACE_EXISTING);
+                        }
+                        FormDonasi form = new FormDonasi();
+                        this.setVisible(false);
+                        form.setVisible(true);
+                        form.setTitle("Form Donasi");
+                    }else{
+                         throw new Exception("Format gambar harus JPEG, JPG, dan PNG !");
+                    }
                 }
             }
         }catch(Exception e){
+            e.printStackTrace();
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
     }//GEN-LAST:event_simpanActionPerformed
+
+    private void jumlahDonasiKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jumlahDonasiKeyTyped
+        // TODO add your handling code here:
+        FunctionValidasi funct = new FunctionValidasi();
+        funct.filterhuruf(evt,"Field Jumlah Donasi hanya bisa input angka !");
+    }//GEN-LAST:event_jumlahDonasiKeyTyped
+
+    private void noTeleponKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_noTeleponKeyTyped
+        // TODO add your handling code here:
+         FunctionValidasi funct = new FunctionValidasi();
+        funct.filterhuruf(evt, "Field No Telepon hanya bisa input angka !");
+    }//GEN-LAST:event_noTeleponKeyTyped
+
+    private void resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetActionPerformed
+        // TODO add your handling code here:
+        namaDonatur.setText("");
+        alamatDonatur.setText("");
+        jumlahDonasi.setText("");
+        keterangan.setText("");
+        noTelepon.setText("");
+        buktiPembayaran.setText("");
+    }//GEN-LAST:event_resetActionPerformed
+
+    private void namaDonaturKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_namaDonaturKeyTyped
+        // TODO add your handling code here:
+        FunctionValidasi func = new FunctionValidasi();
+        func.filterangka(evt, "Field Nama Donatur tidak boleh input angka !");
+    }//GEN-LAST:event_namaDonaturKeyTyped
     
      private void loadNoDonasi() throws Exception{
         String no_donasi = "";

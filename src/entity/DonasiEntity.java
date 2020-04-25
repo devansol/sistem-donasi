@@ -17,6 +17,9 @@ public class DonasiEntity {
     private double jumlah_donasi;
     private String no_telp;
     private String keterangan;
+    
+    private String tanggal_donasi;
+    private double total_donasi;
 
     /**
      * @return the no_donasi
@@ -114,6 +117,34 @@ public class DonasiEntity {
      */
     public void setKeterangan(String keterangan) {
         this.keterangan = keterangan;
+    }
+
+    /**
+     * @return the total_donasi
+     */
+    public double getTotal_donasi() {
+        return total_donasi;
+    }
+
+    /**
+     * @param total_donasi the total_donasi to set
+     */
+    public void setTotal_donasi(double total_donasi) {
+        this.total_donasi = total_donasi;
+    }
+
+    /**
+     * @return the tanggal_donasi
+     */
+    public String getTanggal_donasi() {
+        return tanggal_donasi;
+    }
+
+    /**
+     * @param tanggal_donasi the tanggal_donasi to set
+     */
+    public void setTanggal_donasi(String tanggal_donasi) {
+        this.tanggal_donasi = tanggal_donasi;
     }
     
     
