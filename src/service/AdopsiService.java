@@ -5,6 +5,7 @@
  */
 package service;
 
+import constand.Query;
 import dao.AdopsiDao;
 import entity.AdopsiEntity;
 import java.util.ArrayList;
@@ -129,5 +130,28 @@ public class AdopsiService extends KoneksiDb {
             connect.closeConnection();
         }
         return list;
+    }
+    
+    public Map<String,Object> deleteAdopsi(String no_adopsi) throws Exception{
+        Map<String, Object>map = new HashMap<String, Object>();
+        Conn connect = new Conn();
+        try{
+            connect.conn = getConnection();
+             connect.conn.setAutoCommit(false);
+            map = dao.deleteAdopsi(no_adopsi, connect);
+            
+            if(!(boolean)map.get("status")){
+                throw new Exception(map.get("message").toString());
+            }else{
+                connect.conn.commit();
+            }
+            
+        }catch(Exception e){
+            map.put("message", "Data gagal di hapus ! (" + e.getMessage() + ")");
+            map.put("status", false);
+            e.printStackTrace();
+            throw new Exception(e.getMessage());
+        }
+        return map;
     }
 }

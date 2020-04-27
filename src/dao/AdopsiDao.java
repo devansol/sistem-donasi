@@ -145,7 +145,7 @@ public class AdopsiDao {
             connect.ps.setString(1, no_adopsi);
             connect.rs = connect.ps.executeQuery();
             
-            while(connect.rs.next()){
+            if(connect.rs.next()){
                 response.setNo_adopsi(connect.rs.getString(1));
                 response.setNama_adopsi(connect.rs.getString(2));
                 response.setAlamat(connect.rs.getString(3));
@@ -154,9 +154,11 @@ public class AdopsiDao {
                 response.setKode_anak(connect.rs.getString(6));
                 response.setNama_anak(connect.rs.getString(7));
                 response.setKeterangan(connect.rs.getString(8));
+            }else{
+                throw new Exception("Data tidak ditemukan !");
             }
+            
         }catch(Exception e){
-        
             throw new Exception(e.getMessage());
         }
         return response;
@@ -185,5 +187,22 @@ public class AdopsiDao {
             throw new Exception(e.getMessage());
         }
         return list;
+    }
+    
+    public Map<String,Object> deleteAdopsi(String no_adopsi, Conn connect) throws Exception{
+        Map<String, Object>map = new HashMap<String, Object>();
+        try{
+            connect.ps = connect.conn.prepareStatement(Query.deleteAdopsi);
+            connect.ps.setString(1, no_adopsi);
+            connect.ps.executeUpdate();
+            map.put("message", "Data berhasil di hapus !");
+            map.put("status", true);
+        }catch(Exception e){
+            map.put("message", "Data gagal di hapus ! (" + e.getMessage() + ")");
+            map.put("status", false);
+            e.printStackTrace();
+            throw new Exception(e.getMessage());
+        }
+        return map;
     }
 }

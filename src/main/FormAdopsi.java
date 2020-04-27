@@ -6,7 +6,6 @@
 package main;
 
 import entity.AdopsiEntity;
-import entity.DonasiEntity;
 import entity.SessionEntity;
 import static java.lang.Thread.sleep;
 import java.text.SimpleDateFormat;
@@ -21,7 +20,6 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import main.modal.ModalViewDataAdopsi;
-import main.modal.ModalViewDataDonasi;
 import service.AdopsiService;
 
 /**
@@ -70,12 +68,16 @@ public class FormAdopsi extends javax.swing.JFrame {
             }
         };
         date = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        inpCari = new javax.swing.JTextField();
+        btnCari = new javax.swing.JButton();
+        btnRefresh = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         tambahDonasi = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         hapusDataAnak = new javax.swing.JMenuItem();
-        ubahData = new javax.swing.JMenuItem();
         menuKeluar = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         menuLogout = new javax.swing.JMenu();
@@ -114,6 +116,25 @@ public class FormAdopsi extends javax.swing.JFrame {
 
         date.setText("Tanggal");
 
+        jLabel3.setText("Cari");
+
+        btnCari.setText("Cari");
+        btnCari.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCariActionPerformed(evt);
+            }
+        });
+
+        btnRefresh.setText("Refresh");
+        btnRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        jLabel4.setText("Info : Mencari data adopsi dengan NOMOR ADOPSI.");
+
         jMenu1.setText("Aksi");
 
         tambahDonasi.setText("Tambah Data Adopsi");
@@ -139,14 +160,6 @@ public class FormAdopsi extends javax.swing.JFrame {
             }
         });
         jMenu1.add(hapusDataAnak);
-
-        ubahData.setText("Ubah Data Donasi");
-        ubahData.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ubahDataActionPerformed(evt);
-            }
-        });
-        jMenu1.add(ubahData);
 
         menuKeluar.setText("Keluar");
         menuKeluar.addActionListener(new java.awt.event.ActionListener() {
@@ -185,18 +198,34 @@ public class FormAdopsi extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(jLabel2))
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 610, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(221, 221, 221)
-                        .addComponent(jLabel1)))
-                .addContainerGap(244, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(30, 30, 30)
+                                .addComponent(jLabel2))
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel1)
+                                .addGap(48, 48, 48)
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(inpCari, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(btnCari)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnRefresh)))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addContainerGap()
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
-                            .addGap(20, 423, Short.MAX_VALUE)
+                            .addContainerGap(470, Short.MAX_VALUE)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(date1)
@@ -211,8 +240,9 @@ public class FormAdopsi extends javax.swing.JFrame {
                                 .addComponent(time)
                                 .addComponent(date))
                             .addGap(51, 51, 51))
-                        .addComponent(jSeparator1)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 573, Short.MAX_VALUE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(jSeparator1)))
                     .addContainerGap()))
         );
         layout.setVerticalGroup(
@@ -220,9 +250,18 @@ public class FormAdopsi extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel2)
-                .addGap(42, 42, 42)
-                .addComponent(jLabel1)
-                .addContainerGap(210, Short.MAX_VALUE))
+                .addGap(46, 46, 46)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(inpCari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCari)
+                    .addComponent(btnRefresh)
+                    .addComponent(jLabel1))
+                .addGap(3, 3, 3)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
+                .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(3, 3, 3)
@@ -237,9 +276,7 @@ public class FormAdopsi extends javax.swing.JFrame {
                         .addComponent(time))
                     .addGap(14, 14, 14)
                     .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(51, 51, 51)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addContainerGap(246, Short.MAX_VALUE)))
         );
 
         pack();
@@ -288,38 +325,19 @@ public class FormAdopsi extends javax.swing.JFrame {
             }
             int flag = JOptionPane.showConfirmDialog(null, "Anda yakin ingin menghapus data ini ?", "Peringatan", JOptionPane.YES_NO_OPTION);
             if(flag == 0){
-//                response = service.deleteDonasi(tableDonasi.getValueAt(i, 1).toString());
+                response = service.deleteAdopsi(tableAdopsi.getValueAt(i, 1).toString());
 
                 if(!(boolean)response.get("status")){
                     throw new Exception(response.get("message").toString());
                 }else{
                     JOptionPane.showMessageDialog(null, response.get("message").toString());
-//                    this.geAllDataDonasi();
+                    this.getAllAdopsi();
                 }
             }
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
     }//GEN-LAST:event_hapusDataAnakActionPerformed
-
-    private void ubahDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ubahDataActionPerformed
-        // TODO add your handling code here:
-        int i = tableAdopsi.getSelectedRow();
-        Map<String,Object> response = new HashMap<String, Object>();
-        try{
-            if(i == -1){
-                throw new Exception("Pilih data terlebih dahulu pada tabel!");
-            }
-            SessionEntity.setNo_donasi(tableAdopsi.getValueAt(i,1).toString());
-            this.setVisible(false);
-            FormUbahDataDonasi form = new FormUbahDataDonasi();
-            form.setVisible(true);
-            form.setTitle("Form Ubah Data Anak");
-
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, e.getMessage());
-        }
-    }//GEN-LAST:event_ubahDataActionPerformed
 
     private void menuKeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuKeluarActionPerformed
         // TODO add your handling code here:
@@ -346,6 +364,41 @@ public class FormAdopsi extends javax.swing.JFrame {
     private void menuLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuLogoutActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_menuLogoutActionPerformed
+
+    private void btnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariActionPerformed
+        // TODO add your handling code here:
+        AdopsiEntity list  = new AdopsiEntity();
+        DefaultTableModel model = new DefaultTableModel();
+        tableAdopsi.setModel(model);
+         model.addColumn("No");
+        model.addColumn("Nomor Adopsi");
+        model.addColumn("Nama Lengkap");
+        model.addColumn("Nama Anak");
+        try{
+            list = service.getDataAdopsiByNoAdopsi(inpCari.getText());
+
+            Object[] obj = new Object[4];
+            obj[0] = 1;
+            obj[1] = list.getNo_adopsi();
+            obj[2] = list.getNama_adopsi();
+            obj[3] = list.getNama_anak();
+            model.addRow(obj);
+            
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }//GEN-LAST:event_btnCariActionPerformed
+
+    private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
+        try {
+            // TODO add your handling code here:
+            this.getAllAdopsi();
+            inpCari.setText("");
+        } catch (Exception ex) {
+            Logger.getLogger(FormAnak.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_btnRefreshActionPerformed
 
     /**
      * @param args the command line arguments
@@ -515,14 +568,19 @@ public class FormAdopsi extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCari;
+    private javax.swing.JButton btnRefresh;
     private javax.swing.JLabel date;
     private javax.swing.JLabel date1;
     private javax.swing.JLabel date2;
     private javax.swing.JLabel date3;
     private javax.swing.JLabel date4;
     private javax.swing.JMenuItem hapusDataAnak;
+    private javax.swing.JTextField inpCari;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
@@ -535,6 +593,5 @@ public class FormAdopsi extends javax.swing.JFrame {
     private javax.swing.JTable tableAdopsi;
     private javax.swing.JMenuItem tambahDonasi;
     private javax.swing.JLabel time;
-    private javax.swing.JMenuItem ubahData;
     // End of variables declaration//GEN-END:variables
 }

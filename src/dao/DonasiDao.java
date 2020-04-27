@@ -106,13 +106,16 @@ public class DonasiDao {
             connect.ps = connect.conn.prepareStatement(Query.getDataDonasiByNoDonasi);
             connect.ps.setString(1, no_donasi);
             connect.rs = connect.ps.executeQuery();
-            while(connect.rs.next()){
+            if(connect.rs.next()){
+                response.setNo_donasi(no_donasi);
                 response.setNama_donatur(connect.rs.getString(3));
                 response.setAlamat_donatur(connect.rs.getString(4));
                 response.setJumlah_donasi(connect.rs.getDouble(5));
                 response.setNo_telp(connect.rs.getString(6));
                 response.setBukti_pembayaran(connect.rs.getString(7));
                 response.setKeterangan(connect.rs.getString(8));
+            }else{
+                throw new Exception("Data tidak di temukan !");
             }
         } catch (Exception e) {
             e.printStackTrace();

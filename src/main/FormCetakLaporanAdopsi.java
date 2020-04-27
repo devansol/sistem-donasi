@@ -6,13 +6,21 @@
 package main;
 
 import entity.SessionEntity;
+import java.io.File;
 import static java.lang.Thread.sleep;
+import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -53,6 +61,11 @@ public class FormCetakLaporanAdopsi extends javax.swing.JFrame {
         tgl1 = new com.toedter.calendar.JDateChooser();
         tgl2 = new com.toedter.calendar.JDateChooser();
         jButton1 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        informasi = new javax.swing.JTextArea();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         menuKeluar = new javax.swing.JMenuItem();
@@ -87,6 +100,25 @@ public class FormCetakLaporanAdopsi extends javax.swing.JFrame {
         tgl2.setDateFormatString("yyyy-MM-dd");
 
         jButton1.setText("Cetak");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        informasi.setColumns(20);
+        informasi.setRows(5);
+        jScrollPane1.setViewportView(informasi);
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel5.setText("Informasi");
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel6.setText(":");
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        jLabel7.setText("Note : Jika tidak ada informasi yang ingin di berikan , ketikan \"-\" pada text box");
+        jLabel7.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
         jMenu1.setText("Aksi");
 
@@ -152,9 +184,21 @@ public class FormCetakLaporanAdopsi extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jLabel3)
                         .addGap(18, 18, 18)
-                        .addComponent(tgl2, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButton1))
-                .addContainerGap(22, Short.MAX_VALUE))
+                        .addComponent(tgl2, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel6)
+                        .addGap(14, 14, 14)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 373, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 37, Short.MAX_VALUE))))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -174,21 +218,26 @@ public class FormCetakLaporanAdopsi extends javax.swing.JFrame {
                                     .addComponent(time))))
                         .addGap(14, 14, 14)
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel1)
-                                        .addComponent(jLabel4))
-                                    .addComponent(tgl1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(jLabel3))))
-                    .addComponent(tgl2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(25, 25, 25)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel1)
+                                .addComponent(jLabel4))
+                            .addComponent(tgl1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(tgl2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel5)
+                        .addComponent(jLabel6))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel7)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addComponent(jButton1)
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addGap(102, 102, 102))
         );
 
         pack();
@@ -200,12 +249,12 @@ public class FormCetakLaporanAdopsi extends javax.swing.JFrame {
         this.setVisible(false);
 
         try {
-            FormDonasi ds;
-            ds = new FormDonasi();
-            ds.setTitle("Form Donasi");
+            Dashboard ds;
+            ds = new Dashboard();
+            ds.setTitle("Dashboard");
             ds.setVisible(true);
         } catch (Exception ex) {
-            Logger.getLogger(FormTambahDonasi.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FormCetakLaporanAdopsi.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_menuKeluarActionPerformed
 
@@ -225,6 +274,40 @@ public class FormCetakLaporanAdopsi extends javax.swing.JFrame {
     private void menuLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuLogoutActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_menuLogoutActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        String tanggal1 = ((JTextField)tgl1.getDateEditor().getUiComponent()).getText();
+        String tanggal2 = ((JTextField)tgl2.getDateEditor().getUiComponent()).getText();
+        
+        try {
+            
+            if(informasi.getText().equals("")){
+                throw new Exception("Field Informasi harus di isi !");
+            }
+            if(tanggal1.equals("") || tanggal2.equals("")){
+                JOptionPane.showMessageDialog(null, "Tanggal tidak boleh kosong !");
+                tgl1.requestFocus();
+                return;
+            }else{
+                String namaFile = "src"+File.separator+"report"+File.separator+"ReportAdopsi.jasper";
+                Connection conn = koneksi.KoneksiDb.getConnection();
+
+                Map<String,Object> map =  new HashMap<String, Object>();
+                map.put("tanggal1", tanggal1);
+                map.put("tanggal2", tanggal2);
+                 map.put("informasi",informasi.getText());
+                JasperPrint jprint = JasperFillManager.fillReport(namaFile.toString(), map, conn);
+                if(jprint.getPages().size() != 0){
+                    JasperViewer.viewReport(jprint,false);
+                }else{
+                    JOptionPane.showMessageDialog(null, "Data tidak ditemukan !");
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(FormCetakLaporanAdopsi.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -366,15 +449,20 @@ public class FormCetakLaporanAdopsi extends javax.swing.JFrame {
     private javax.swing.JLabel date;
     private javax.swing.JLabel date1;
     private javax.swing.JLabel date3;
+    private javax.swing.JTextArea informasi;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JMenuItem menuKeluar;
     private javax.swing.JMenu menuLogout;

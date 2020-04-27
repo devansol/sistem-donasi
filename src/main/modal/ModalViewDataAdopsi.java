@@ -44,10 +44,10 @@ public class ModalViewDataAdopsi extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.tanggalSekarang();
-        this.disablefield(false, false, false, false, false, false, false,false);
+        this.disablefield(false, false, false, false, false, false,false);
         menuLogout.setText("User Login : " + SessionEntity.getNama_lengkap());
         this.getDataAdopsiByNomorAdopsi();
-        
+        noAdopsi.setEditable(false);
     }
 
     /**
@@ -374,7 +374,7 @@ public class ModalViewDataAdopsi extends javax.swing.JFrame {
 
     private void editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editActionPerformed
         // TODO add your handling code here:
-         this.disablefield(true, true, true, true, true, true, true, true);
+         this.disablefield(true, true, true, true, true, true, true);
          edit.setEnabled(false);
     }//GEN-LAST:event_editActionPerformed
 
@@ -562,11 +562,10 @@ public class ModalViewDataAdopsi extends javax.swing.JFrame {
         clock.start();        
     }
     
-    private void disablefield(boolean nama_adopsi, boolean no_adopsi,boolean alama_donatur,
+    private void disablefield(boolean nama_adopsi,boolean alama_donatur,
             boolean no_telp, boolean pekerjaan_val, boolean nama_anak, boolean keterangan_val,
             boolean btn_simpan){
         namaAdopsi.setEditable(nama_adopsi);
-        noAdopsi.setEditable(no_adopsi);
         alamatDonatur.setEditable(alama_donatur);
         noTelepon.setEditable(no_telp);
         pekerjaan.setEnabled(pekerjaan_val);

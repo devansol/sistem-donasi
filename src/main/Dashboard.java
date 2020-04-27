@@ -147,6 +147,11 @@ public class Dashboard extends javax.swing.JFrame {
         jMenu6.setText("Laporan");
 
         jMenuItem2.setText("Laporan Data Adopsi");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
         jMenu6.add(jMenuItem2);
 
         jMenuItem4.setText("Laporan Donasi");
@@ -306,8 +311,19 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_menuAdopsiActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        // TODO add your handling code here:
+        FormCetakLaporanDonasi form = new FormCetakLaporanDonasi();
+        form.setVisible(true);
+        form.setTitle("Form Laporan Adopsi");
+        this.setVisible(false);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+        FormCetakLaporanAdopsi form = new FormCetakLaporanAdopsi();
+        form.setVisible(true);
+        form.setTitle("Form Laporan Adopsi");
+        this.setVisible(false);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     /**
      * @param args the command line arguments

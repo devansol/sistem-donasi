@@ -84,7 +84,7 @@ public class Query {
             + "no_telp = ?,"
             + "pekerjaan = ?,"
             + "kode_anak = ?,"
-            + "keteranga = ? "
+            + "keterangan = ? "
             + "where no_adopsi = ?";
     
     public static String getDataAdopsiByNoAdopsi = "select a.no_adopsi, a.nama_adopsi, "
@@ -109,4 +109,6 @@ public class Query {
 "	mst_anak b \n" +
 "WHERE\n" +
 "	a.kode_anak = b.kode_anak and create_date BETWEEN date(?) and date(?)";
+    
+    public static final String deleteAdopsi = "delete from mst_adopsi where no_adopsi = ?";
 }
